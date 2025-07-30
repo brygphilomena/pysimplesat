@@ -2,28 +2,28 @@ from pysimplesat.endpoints.base.base_endpoint import SimpleSatEndpoint
 from pysimplesat.interfaces import (
     IGettable,
 )
-from pysimplesat.models.simplesat import Account
+from pysimplesat.models.simplesat import Response
 from pysimplesat.types import (
     JSON,
     SimpleSatRequestParams,
 )
 
 
-class AccountEndpoint(
+class ResponsesIdEndpoint(
     SimpleSatEndpoint,
-    IGettable[Account, SimpleSatRequestParams],
+    IGettable[Response, SimpleSatRequestParams],
 ):
     def __init__(self, client, parent_endpoint=None) -> None:
-        SimpleSatEndpoint.__init__(self, client, "account", parent_endpoint=parent_endpoint)
-        IGettable.__init__(self, Account)
+        SimpleSatEndpoint.__init__(self, client, "{id}", parent_endpoint=parent_endpoint)
+        IGettable.__init__(self, Response)
 
     def get(
         self,
         data: JSON | None = None,
         params: SimpleSatRequestParams | None = None,
-    ) -> Account:
+    ) -> Response:
         """
-        Performs a GET request against the /account endpoint.
+        Performs a GET request against the /responses/{id} endpoint.
 
         Parameters:
             data (dict[str, Any]): The data to send in the request body.
@@ -32,6 +32,6 @@ class AccountEndpoint(
             AuthInformation: The parsed response data.
         """
         return self._parse_one(
-            Account,
-            super()._make_request("GET", data=data, params=params).json().get('account', {}),
+            Response,
+            super()._make_request("GET", data=data, params=params).json(),
         )

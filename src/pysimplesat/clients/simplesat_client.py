@@ -1,19 +1,16 @@
 import typing
 from datetime import datetime, timezone
-import base64
 
 from pysimplesat.clients.base_client import SimpleSatClient
 from pysimplesat.config import Config
 
 if typing.TYPE_CHECKING:
-    from pysimplesat.endpoints.simplesat.AccountEndpoint import AccountEndpoint
-    from pysimplesat.endpoints.simplesat.ActorEndpoint import ActorEndpoint
-    from pysimplesat.endpoints.simplesat.AgentsEndpoint import AgentsEndpoint
-    from pysimplesat.endpoints.simplesat.BillingreportsEndpoint import BillingreportsEndpoint
-    from pysimplesat.endpoints.simplesat.IncidentreportsEndpoint import IncidentreportsEndpoint
-    from pysimplesat.endpoints.simplesat.OrganizationsEndpoint import OrganizationsEndpoint
-    from pysimplesat.endpoints.simplesat.ReportsEndpoint import ReportsEndpoint
-    from pysimplesat.endpoints.simplesat.SignalsEndpoint import SignalsEndpoint
+    from pysimplesat.endpoints.simplesat.SurveysEndpoint import SurveysEndpoint
+    from pysimplesat.endpoints.simplesat.AnswersEndpoint import AnswersEndpoint
+    from pysimplesat.endpoints.simplesat.CustomersEndpoint import CustomersEndpoint
+    from pysimplesat.endpoints.simplesat.QuestionsEndpoint import QuestionsEndpoint
+    from pysimplesat.endpoints.simplesat.TeamMembersEndpoint import TeamMembersEndpoint
+    from pysimplesat.endpoints.simplesat.ResponsesEndpoint import ResponsesEndpoint
 
 
 class SimpleSatAPIClient(SimpleSatClient):
@@ -37,52 +34,41 @@ class SimpleSatAPIClient(SimpleSatClient):
 
     # Initializing endpoints
     @property
-    def account(self) -> "AccountEndpoint":
-        from pysimplesat.endpoints.simplesat.AccountEndpoint import AccountEndpoint
+    def surveys(self) -> "SurveysEndpoint":
+        from pysimplesat.endpoints.simplesat.SurveysEndpoint import SurveysEndpoint
 
-        return AccountEndpoint(self)
-
-    @property
-    def actor(self) -> "ActorEndpoint":
-        from pysimplesat.endpoints.simplesat.ActorEndpoint import ActorEndpoint
-
-        return ActorEndpoint(self)
+        return SurveysEndpoint(self)
 
     @property
-    def agents(self) -> "AgentsEndpoint":
-        from pysimplesat.endpoints.simplesat.AgentsEndpoint import AgentsEndpoint
+    def answers(self) -> "AnswersEndpoint":
+        from pysimplesat.endpoints.simplesat.AnswersEndpoint import AnswersEndpoint
 
-        return AgentsEndpoint(self)
-
-    @property
-    def billing_reports(self) -> "BillingreportsEndpoint":
-        from pysimplesat.endpoints.simplesat.BillingreportsEndpoint import BillingreportsEndpoint
-
-        return BillingreportsEndpoint(self)
+        return AnswersEndpoint(self)
 
     @property
-    def incident_reports(self) -> "IncidentreportsEndpoint":
-        from pysimplesat.endpoints.simplesat.IncidentreportsEndpoint import IncidentreportsEndpoint
+    def customers(self) -> "CustomersEndpoint":
+        from pysimplesat.endpoints.simplesat.CustomersEndpoint import CustomersEndpoint
 
-        return IncidentreportsEndpoint(self)
-
-    @property
-    def organizations(self) -> "OrganizationsEndpoint":
-        from pysimplesat.endpoints.simplesat.OrganizationsEndpoint import OrganizationsEndpoint
-
-        return OrganizationsEndpoint(self)
+        return CustomersEndpoint(self)
 
     @property
-    def reports(self) -> "ReportsEndpoint":
-        from pysimplesat.endpoints.simplesat.ReportsEndpoint import ReportsEndpoint
+    def questions(self) -> "QuestionsEndpoint":
+        from pysimplesat.endpoints.simplesat.QuestionsEndpoint import QuestionsEndpoint
 
-        return ReportsEndpoint(self)
+        return QuestionsEndpoint(self)
 
     @property
-    def signals(self) -> "SignalsEndpoint":
-        from pysimplesat.endpoints.simplesat.SignalsEndpoint import SignalsEndpoint
+    def team_members(self) -> "TeamMembersEndpoint":
+        from pysimplesat.endpoints.simplesat.TeamMembersEndpoint import TeamMembersEndpoint
 
-        return SignalsEndpoint(self)
+        return TeamMembersEndpoint(self)
+
+    @property
+    def responses(self) -> "ResponsesEndpoint":
+        from pysimplesat.endpoints.simplesat.ResponsesEndpoint import ResponsesEndpoint
+
+        return ResponsesEndpoint(self)
+
 
     def _get_url(self) -> str:
         """

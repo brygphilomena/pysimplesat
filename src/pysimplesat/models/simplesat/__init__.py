@@ -33,7 +33,7 @@ class Answer(SimpleSatModel):
     published_as_testimonial: bool | None = Field(default=None, alias="PublishedAsTestimonial")
     response_id: int | None = Field(default=None, alias="ResponseId")
 
-class Answer(SimpleSatModel):
+class Customer(SimpleSatModel):
     id: int | None = Field(default=None, alias="Id")
     external_id: str | None = Field(default=None, alias="ExternalId")
     created: datetime | None = Field(default=None, alias="Created")
@@ -59,3 +59,18 @@ class Response(SimpleSatModel):
     team_members: dict[str, Any] | None = Field(default=None, alias="TeamMembers")
     ticket: dict[str, Any] | None = Field(default=None, alias="Ticket")
     customer: dict[str, Any] | None = Field(default=None, alias="Customer")
+
+class Survey(SimpleSatModel):
+    id: int | None = Field(default=None, alias="Id")
+    name: str | None = Field(default=None, alias="Name")
+    metric: str | None = Field(default=None, alias="Metric")
+    survey_token: str | None = Field(default=None, alias="SurveyToken")
+    survey_type: str | None = Field(default=None, alias="SurveyType")
+    brand_name: str | None = Field(default=None, alias="BrandName")
+
+class CustomerBulk(SimpleSatModel):
+    request_id: str | None = Field(default=None, alias="RequestId")
+    detail: str | None = Field(default=None, alias="Detail")
+    
+class SurveyEmail(SimpleSatModel):
+    detail: str | None = Field(default=None, alias="Detail")
