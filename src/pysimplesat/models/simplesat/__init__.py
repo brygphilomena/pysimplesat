@@ -55,8 +55,8 @@ class TeamMember(SimpleSatModel):
 class Response(SimpleSatModel):
     survey_id: int | None = Field(default=None, alias="SurveyId")
     tags: list | None = Field(default=None, alias="Tags")
-    answers: dict[str, Any] | None = Field(default=None, alias="Answers")
-    team_members: dict[str, Any] | None = Field(default=None, alias="TeamMembers")
+    answers: list[dict[str, Any]] | None = Field(default=None, alias="Answers")
+    team_members: list[dict[str, Any]] | None = Field(default=None, alias="TeamMembers")
     ticket: dict[str, Any] | None = Field(default=None, alias="Ticket")
     customer: dict[str, Any] | None = Field(default=None, alias="Customer")
 
