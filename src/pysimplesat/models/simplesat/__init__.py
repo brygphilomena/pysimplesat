@@ -68,6 +68,17 @@ class Survey(SimpleSatModel):
     survey_type: str | None = Field(default=None, alias="SurveyType")
     brand_name: str | None = Field(default=None, alias="BrandName")
 
+class Question(SimpleSatModel):
+    id: int | None = Field(default=None, alias="Id")
+    survey: dict[str, int | str] | None = Field(default=None, alias="Survey")
+    order: int | None = Field(default=None, alias="Order")
+    metric: str | None = Field(default=None, alias="Metric")
+    text: str | None = Field(default=None, alias="Text")
+    rating_scale: bool | None = Field(default=None, alias="RatingScale")
+    required: bool | None = Field(default=None, alias="Required")
+    choices: list[str] | None = Field(default=None, alias="Choices")
+    rules: dict[str, Any] | None = Field(default=None, alias="Rules")
+
 class CustomerBulk(SimpleSatModel):
     request_id: str | None = Field(default=None, alias="RequestId")
     detail: str | None = Field(default=None, alias="Detail")

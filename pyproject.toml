@@ -1,6 +1,6 @@
 [project]
 name = "pysimplesat"
-version = "0.1.2"
+version = "0.1.3"
 authors = [
   { name="Peter Annabel", email="peter.annabel@gmail.com" },
 ]
