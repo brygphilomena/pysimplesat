@@ -77,7 +77,7 @@ class Question(SimpleSatModel):
     rating_scale: bool | None = Field(default=None, alias="RatingScale")
     required: bool | None = Field(default=None, alias="Required")
     choices: list[str] | None = Field(default=None, alias="Choices")
-    rules: dict[str, Any] | None = Field(default=None, alias="Rules")
+    rules: list[dict[str, Any]] | None = Field(default=None, alias="Rules")
 
 class CustomerBulk(SimpleSatModel):
     request_id: str | None = Field(default=None, alias="RequestId")
