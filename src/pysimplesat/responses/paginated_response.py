@@ -86,26 +86,22 @@ class PaginatedResponse(Generic[TModel]):
         self.limit = limit
         # Get page data from the response body
         try:
-            self.parsed_pagination_response = parse_response_body(json.loads(response.content.decode('utf-8')).get('pagination', {}))
+            self.parsed_pagination_response = parse_response_body(json.loads(response.content.decode('utf-8')))
+            if self.parsed_pagination_response is not None:
+                # SimpleSat API gives us a handy response to parse for Pagination
+                self.has_next_page: bool = self.parsed_pagination_response.get("has_next_page", False)
+                self.has_prev_page: bool = self.parsed_pagination_response.get("has_prev_page", False)
+                self.prev_page: int = self.parsed_pagination_response.get("prev_page", None)
+                self.next_page: int = self.parsed_pagination_response.get("next_page", None)
+            else:
+                # Haven't worked on this yet
+                self.has_next_page: bool = True
+                self.has_prev_page: bool = page > 1
+                self.prev_page = page - 1 if page > 1 else 1
+                self.next_page = page + 1
         except:
-            self.parsed_pagination_response = parse_response_body(json.loads(response.content.decode('utf-8')).get('meta.page', {}))
+            pass
         self.params = params
-        if self.parsed_pagination_response is not None:
-            # SimpleSat API gives us a handy response to parse for Pagination
-            self.has_next_page: bool = self.parsed_pagination_response.get("has_next_page", False)
-            self.has_prev_page: bool = self.parsed_pagination_response.get("has_prev_page", False)
-            self.first_page: int = self.parsed_pagination_response.get("first_page", None)
-            self.prev_page: int = self.parsed_pagination_response.get("prev_page", None)
-            self.next_page: int = self.parsed_pagination_response.get("next_page", None)
-            self.last_page: int = self.parsed_pagination_response.get("last_page", None)
-        else:
-            # Haven't worked on this yet
-            self.has_next_page: bool = True
-            self.has_prev_page: bool = page > 1
-            self.first_page: int = 1
-            self.prev_page = page - 1 if page > 1 else 1
-            self.next_page = page + 1
-            self.last_page = 999999
         self.data: list[TModel] = [response_model.model_validate(d) for d in response.json().get(endpoint, {})]
         self.has_data = self.data and len(self.data) > 0
         self.index = 0
