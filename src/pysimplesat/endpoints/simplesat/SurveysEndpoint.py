@@ -45,7 +45,6 @@ class SurveysEndpoint(
         Returns:
             Survey: The parsed response data.
         """
-        print("get")
         return self._parse_many(
             Survey,
             super()._make_request("GET", data=data, params=params).json().get('surveys', {}),

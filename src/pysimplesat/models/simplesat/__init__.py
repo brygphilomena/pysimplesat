@@ -53,6 +53,19 @@ class TeamMember(SimpleSatModel):
     custom_attributes: dict[str, str | int] | None = Field(default=None, alias="CustomAttributes")
 
 class Response(SimpleSatModel):
+    id: int | None = Field(default=None, alias="Id")
+    survey: dict[str, str | int] | None = Field(default=None, alias="Survey")
+    tags: list[str] | None = Field(default=None, alias="Tags")
+    created: datetime | None = Field(default=None, alias="Created")
+    modified: datetime | None = Field(default=None, alias="Modified")
+    ip_address: str | None = Field(default=None, alias="IPAddress")
+    ticket: dict[str, Any] | None = Field(default=None, alias="Ticket")
+    team_members: list[dict[str, Any]] | None = Field(default=None, alias="TeamMembers")
+    customer: dict[str, Any] | None = Field(default=None, alias="Customer")
+    answers: list[dict[str, Any]] | None = Field(default=None, alias="Answers")
+    source: str | None = Field(default=None, alias="Source")
+
+class ResponseCreatePost(SimpleSatModel):
     survey_id: int | None = Field(default=None, alias="SurveyId")
     tags: list | None = Field(default=None, alias="Tags")
     answers: list[dict[str, Any]] | None = Field(default=None, alias="Answers")
