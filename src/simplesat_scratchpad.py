@@ -14,7 +14,8 @@ simplesat_api_client = SimpleSatAPIClient(
 #surveys = simplesat_api_client.surveys.get()
 #print(surveys)
 
-page_answers = simplesat_api_client.answers.search.paginated(1,1000)
-answers = page_answers.all()
-print(answers)
-#print(answers.data)
+page_responses = simplesat_api_client.responses.search.paginated(1)
+responses = page_responses.all()
+print(responses)
+for response in responses:
+    print(response.id)

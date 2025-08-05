@@ -25,7 +25,6 @@ class ResponsesSearchEndpoint(
     def paginated(
         self,
         page: int,
-        limit: int,
         params: SimpleSatRequestParams | None = None,
     ) -> PaginatedResponse[Response]:
         """
@@ -33,28 +32,23 @@ class ResponsesSearchEndpoint(
 
         Parameters:
             page (int): The page number to request.
-            limit (int): The number of results to return per page.
             params (dict[str, int | str]): The parameters to send in the request query string.
         Returns:
             PaginatedResponse[Response]: The initialized PaginatedResponse object.
         """
         if params:
-            params["page[number]"] = page
-            params["page[size]"] = limit
+            params["page"] = page
         else:
-            params = {"page[number]": page, "page[size]": limit}
+            params = {"page[number]": page}
         return PaginatedResponse(
             super()._make_request("POST", params=params),
             Response,
             self,
             "responses",
             page,
-            limit,
             params,
         )
 
-
-    #TODO: How do I paginate a post?
     def post(self, data: JSON | None = None, params: SimpleSatRequestParams | None = None) -> Response:
         """
         Performs a POST request against the /responses/search endpoint.

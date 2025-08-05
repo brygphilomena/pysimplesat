@@ -30,8 +30,7 @@ class IPaginateable(IMethodBase, Generic[TModel, TRequestParams]):
     @abstractmethod
     def paginated(
         self,
-        page: int,
-        page_size: int,
+        page: int | None = 1,
         params: TRequestParams | None = None,
     ) -> PaginatedResponse[TModel]:
         pass

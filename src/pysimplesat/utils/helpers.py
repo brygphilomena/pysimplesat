@@ -65,8 +65,12 @@ def parse_response_body(
     previous: str | None = None
 
     result = {}
+    print(body)
     if body["previous"] is not None:
-        result["prev_page"] = parse_qs(urlparse(body["previous"]).query)['page'][0]
+        try:
+            result["prev_page"] = parse_qs(urlparse(body["previous"]).query)['page'][0]
+        except:
+            result["prev_page"] = 1
 
     if body["next"] is not None:
         result["next_page"] = parse_qs(urlparse(body["next"]).query)['page'][0]

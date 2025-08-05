@@ -21,7 +21,6 @@ class SimpleSatRequestParams(TypedDict):
     customFieldConditions: NotRequired[str]
     page_token: NotRequired[str]
     page: NotRequired[int]
-    limit: NotRequired[int]
     organization_id: NotRequired[int]
     platform: NotRequired[str]
     status: NotRequired[str]

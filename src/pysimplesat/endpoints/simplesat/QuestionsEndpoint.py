@@ -24,7 +24,6 @@ class QuestionsEndpoint(
     def paginated(
         self,
         page: int,
-        limit: int,
         params: SimpleSatRequestParams | None = None,
     ) -> PaginatedResponse[Question]:
         """
@@ -32,23 +31,20 @@ class QuestionsEndpoint(
 
         Parameters:
             page (int): The page number to request.
-            limit (int): The number of results to return per page.
             params (dict[str, int | str]): The parameters to send in the request query string.
         Returns:
             PaginatedResponse[Question]: The initialized PaginatedResponse object.
         """
         if params:
-            params["page[number]"] = page
-            params["page[size]"] = limit
+            params["page"] = page
         else:
-            params = {"page[number]": page, "page[size]": limit}
+            params = {"page": page}
         return PaginatedResponse(
             super()._make_request("GET", params=params),
             Question,
             self,
             "questions",
             page,
-            limit,
             params,
         )
 
