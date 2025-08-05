@@ -62,7 +62,6 @@ class QuestionsEndpoint(
         Returns:
             Question: The parsed response data.
         """
-        print("get")
         return self._parse_many(
             Question,
             super()._make_request("GET", data=data, params=params).json().get('questions', {}),

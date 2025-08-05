@@ -93,7 +93,6 @@ class PaginatedResponse(Generic[TModel]):
             self.has_prev_page: bool = page > 1
             self.prev_page = page - 1 if page > 1 else 1
             self.next_page = page + 1
-        print(self.parsed_pagination_response)
         self.params = params
         self.data: list[TModel] = [response_model.model_validate(d) for d in response.json().get(endpoint, {})]
         self.has_data = self.data and len(self.data) > 0
