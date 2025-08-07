@@ -8,6 +8,7 @@ if TYPE_CHECKING:
 
     from pysimplesat.clients.base_client import SimpleSatClient
     from pysimplesat.types import (
+        JSON,
         RequestData,
         RequestMethod,
         RequestParams,
@@ -112,7 +113,7 @@ class SimpleSatEndpoint:
         self,
         method: RequestMethod,
         endpoint: SimpleSatEndpoint | None = None,
-        data: RequestData | None = None,
+        data: JSON | None = None,
         params: RequestParams | None = None,
         headers: dict[str, str] | None = None,
         stream: bool = False,  # noqa: FBT001, FBT002

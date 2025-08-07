@@ -13,8 +13,9 @@ simplesat_api_client = SimpleSatAPIClient(
 
 #surveys = simplesat_api_client.surveys.get()
 #print(surveys)
+body = {"start_date": "2025-04-11T17:00:00Z"}
 
-page_responses = simplesat_api_client.responses.search.paginated(1)
+page_responses = simplesat_api_client.responses.search.paginated(1, body=body)
 responses = page_responses.all()
 print(responses)
 for response in responses:

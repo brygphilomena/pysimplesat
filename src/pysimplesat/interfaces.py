@@ -32,6 +32,7 @@ class IPaginateable(IMethodBase, Generic[TModel, TRequestParams]):
         self,
         page: int | None = 1,
         params: TRequestParams | None = None,
+        body: JSON | None = None,
     ) -> PaginatedResponse[TModel]:
         pass
 

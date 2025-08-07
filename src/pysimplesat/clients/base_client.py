@@ -77,7 +77,7 @@ class SimpleSatClient(ABC):
                 method,
                 url,
                 headers=headers,
-                data=data,
+                json=data,
                 params=cast(dict[str, Any], params or {}),
                 stream=stream,
             )

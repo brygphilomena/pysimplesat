@@ -25,6 +25,7 @@ class QuestionsEndpoint(
         self,
         page: int,
         params: SimpleSatRequestParams | None = None,
+        body: JSON | None = None,
     ) -> PaginatedResponse[Question]:
         """
         Performs a GET request against the /questions endpoint and returns an initialized PaginatedResponse object.
@@ -40,12 +41,13 @@ class QuestionsEndpoint(
         else:
             params = {"page": page}
         return PaginatedResponse(
-            super()._make_request("GET", params=params),
+            super()._make_request("GET", data=body, params=params),
             Question,
             self,
             "questions",
             page,
             params,
+            body,
         )
 
     def get(

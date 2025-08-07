@@ -11,7 +11,7 @@ if TYPE_CHECKING:
     from pydantic import BaseModel
     from requests import Response
 
-    from pysimplesat.types import RequestParams
+    from pysimplesat.types import RequestParams, JSON
 
 
 TModel = TypeVar("TModel", bound="BaseModel")
@@ -43,6 +43,7 @@ class PaginatedResponse(Generic[TModel]):
         endpoint: str,
         page: int,
         params: RequestParams | None = None,
+        body: JSON | None = None,
     ) -> None:
         """
         PaginatedResponse is a wrapper class for handling paginated responses from the
@@ -57,7 +58,7 @@ class PaginatedResponse(Generic[TModel]):
         expected model type for the response data. This allows for type-safe handling
         of model instances throughout the class.
         """
-        self._initialize(response, response_model, endpointmodel, endpoint, page, params)
+        self._initialize(response, response_model, endpointmodel, endpoint, page, body, params)
 
     def _initialize(
         self,
@@ -67,6 +68,7 @@ class PaginatedResponse(Generic[TModel]):
         endpoint: str,
         page: int,
         params: RequestParams | None = None,
+        body: JSON | None = None,
     ):
         """
         Initialize the instance variables using the provided response, endpointmodel, and page size.
@@ -94,6 +96,7 @@ class PaginatedResponse(Generic[TModel]):
             self.prev_page = page - 1 if page > 1 else 1
             self.next_page = page + 1
         self.params = params
+        self.body = body
         self.data: list[TModel] = [response_model.model_validate(d) for d in response.json().get(endpoint, {})]
         self.has_data = self.data and len(self.data) > 0
         self.index = 0
@@ -110,7 +113,7 @@ class PaginatedResponse(Generic[TModel]):
             self.has_data = False
             return self
 
-        next_response = self.endpointmodel.paginated(self.next_page, self.params)
+        next_response = self.endpointmodel.paginated(self.next_page, self.params, self.body)
         self._initialize(
             next_response.response,
             next_response.response_model,
@@ -118,6 +121,7 @@ class PaginatedResponse(Generic[TModel]):
             next_response.endpoint,
             self.next_page,
             self.params,
+            self.body,
         )
         return self
 
@@ -133,13 +137,14 @@ class PaginatedResponse(Generic[TModel]):
             self.has_data = False
             return self
 
-        prev_response = self.endpointmodel.paginated(self.prev_page, self.params)
+        prev_response = self.endpointmodel.paginated(self.prev_page, self.params, self.body)
         self._initialize(
             prev_response.response,
             prev_response.response_model,
             prev_response.endpointmodel,
             self.prev_page,
             self.params,
+            self.body,
         )
         return self
 
