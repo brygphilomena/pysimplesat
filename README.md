@@ -15,12 +15,10 @@ pySimpleSAT is currently in **development**.
 Known Issues:
 =============
 - As this project is still a WIP, documentation or code commentary may not always align.
-- SimpleSAT Managed SAT post not built
 
 Road Map:
 =============
-- Add support for post
-- Add required parameters when calling completion_certificat endpoint
+- 
 
 How-to:
 =============
