@@ -43,7 +43,7 @@ class PaginatedResponse(Generic[TModel]):
         endpoint: str,
         page: int,
         params: RequestParams | None = None,
-        body: JSON | None = None,
+        data: JSON | None = None,
     ) -> None:
         """
         PaginatedResponse is a wrapper class for handling paginated responses from the
@@ -58,7 +58,7 @@ class PaginatedResponse(Generic[TModel]):
         expected model type for the response data. This allows for type-safe handling
         of model instances throughout the class.
         """
-        self._initialize(response, response_model, endpointmodel, endpoint, page, body, params)
+        self._initialize(response, response_model, endpointmodel, endpoint, page, params, data)
 
     def _initialize(
         self,
@@ -68,7 +68,7 @@ class PaginatedResponse(Generic[TModel]):
         endpoint: str,
         page: int,
         params: RequestParams | None = None,
-        body: JSON | None = None,
+        data: JSON | None = None,
     ):
         """
         Initialize the instance variables using the provided response, endpointmodel, and page size.
@@ -76,7 +76,7 @@ class PaginatedResponse(Generic[TModel]):
         Args:
             response: The raw response object from the API.
             endpointmodel (SimpleSatEndpoint[TModel]): The endpointmodel associated with the response.
-            endpoint: The endpoint url to extract the data
+            endpoint: The endpoint url to extract the apidata
         """
         self.response = response
         self.response_model = response_model
@@ -96,9 +96,9 @@ class PaginatedResponse(Generic[TModel]):
             self.prev_page = page - 1 if page > 1 else 1
             self.next_page = page + 1
         self.params = params
-        self.body = body
-        self.data: list[TModel] = [response_model.model_validate(d) for d in response.json().get(endpoint, {})]
-        self.has_data = self.data and len(self.data) > 0
+        self.data = data
+        self.apidata: list[TModel] = [response_model.model_validate(d) for d in response.json().get(endpoint, {})]
+        self.has_apidata = self.apidata and len(self.apidata) > 0
         self.index = 0
 
     def get_next_page(self) -> PaginatedResponse[TModel]:
@@ -107,13 +107,13 @@ class PaginatedResponse(Generic[TModel]):
 
         Returns:
             PaginatedResponse[TModel]: The updated PaginatedResponse instance
-            with the data from the next page or None if there is no next page.
+            with the apidata from the next page or None if there is no next page.
         """
         if not self.has_next_page or not self.next_page:
-            self.has_data = False
+            self.has_apidata = False
             return self
 
-        next_response = self.endpointmodel.paginated(self.next_page, self.params, self.body)
+        next_response = self.endpointmodel.paginated(self.next_page, self.params, self.data)
         self._initialize(
             next_response.response,
             next_response.response_model,
@@ -121,7 +121,7 @@ class PaginatedResponse(Generic[TModel]):
             next_response.endpoint,
             self.next_page,
             self.params,
-            self.body,
+            self.data,
         )
         return self
 
@@ -131,20 +131,20 @@ class PaginatedResponse(Generic[TModel]):
 
         Returns:
             PaginatedResponse[TModel]: The updated PaginatedResponse instance
-            with the data from the next page or None if there is no next page.
+            with the apidata from the next page or None if there is no next page.
         """
         if not self.has_prev_page or not self.prev_page:
-            self.has_data = False
+            self.has_apidata = False
             return self
 
-        prev_response = self.endpointmodel.paginated(self.prev_page, self.params, self.body)
+        prev_response = self.endpointmodel.paginated(self.prev_page, self.params, self.data)
         self._initialize(
             prev_response.response,
             prev_response.response_model,
             prev_response.endpointmodel,
             self.prev_page,
             self.params,
-            self.body,
+            self.data,
         )
         return self
 
@@ -155,8 +155,8 @@ class PaginatedResponse(Generic[TModel]):
         Yields:
             TModel: An instance of the model class for each item in the paginated response.
         """
-        while self.has_data:
-            yield from self.data
+        while self.has_apidata:
+            yield from self.apidata
             self.get_next_page()
 
     def __iter__(self):
@@ -175,20 +175,20 @@ class PaginatedResponse(Generic[TModel]):
         Returns:
             PaginatedResponse[TModel]: The current instance of the PaginatedResponse.
         """
-        return self.data
+        return self.apidata
 
     def __next__(self):
         """
-        Implement the iterator protocol by getting the next item in the data.
+        Implement the iterator protocol by getting the next item in the apidata.
 
         Returns:
-            TModel: The next item in the data.
+            TModel: The next item in the apidata.
 
         Raises:
-            StopIteration: If there are no more items in the data.
+            StopIteration: If there are no more items in the apidata.
         """
-        if self.index < len(self.data):
-            result = self.data[self.index]
+        if self.index < len(self.apidata):
+            result = self.apidata[self.index]
             self.index += 1
             return result
         else:

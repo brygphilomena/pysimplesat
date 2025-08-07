@@ -26,7 +26,7 @@ class AnswersSearchEndpoint(
         self,
         page: int,
         params: SimpleSatRequestParams | None = None,
-        body: JSON | None = None,
+        data: JSON | None = None,
     ) -> PaginatedResponse[Answer]:
         """
         Performs a POST request against the /answers/search endpoint and returns an initialized PaginatedResponse object.
@@ -42,13 +42,13 @@ class AnswersSearchEndpoint(
         else:
             params = {"page": page}
         return PaginatedResponse(
-            super()._make_request("POST", data=body, params=params),
+            super()._make_request("POST", data=data, params=params),
             Answer,
             self,
             "answers",
             page,
             params,
-            body,
+            data,
         )
 
     def post(self, data: JSON | None = None, params: SimpleSatRequestParams | None = None) -> Answer:
